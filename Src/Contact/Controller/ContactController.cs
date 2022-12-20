@@ -35,7 +35,7 @@ public class ContactController : ControllerBase
     [HttpPost]
     public ActionResult<ContactDto> Add(CreateContactDto contactDto)
     {
-        Contact contact = new Contact()
+        var contact = new Contact()
         {
             Id = (int)new Random().NextInt64(),
             Number = contactDto.Number,
