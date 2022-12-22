@@ -9,5 +9,5 @@ public record ContactDto
     [MaxLength(20)]
     public string Number { get; set; } = string.Empty;
     [Required]
-    public string Provider { get; set; } =string.Empty;
+    public string Provider { get; set; } = string.Empty;
 }
