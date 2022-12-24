@@ -4,7 +4,7 @@ using ContactApp.Src.Contact.Model;
 namespace ContactApp;
 public static class Extensions
 {
-    public static ContactDto AsDto(this Contact contact)
+    public static ContactDto AsDto(this Contact? contact)
     {
         return new ContactDto
         {

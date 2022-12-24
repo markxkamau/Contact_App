@@ -33,20 +33,19 @@ public class ContactController : ControllerBase
         return Ok(value);
     }
 
-    // [HttpPost]
-    // public ActionResult<ContactDto> Add(CreateContactDto contactDto)
-    // {
-    //     var contact = new Contact()
-    //     {
-    //         Id = (int)new Random().NextInt64(),
-    //         Number = contactDto.Number,
-    //         Provider = contactDto.Provider
-    //     };
-    //     _context.Contact.Add(contact);
-    //     _context.SaveChanges();
+    [HttpPost]
+    public async Task<ActionResult<ContactDto>> AddAsync(CreateContactDto contactDto)
+    {
+        var check = _context.checkContact(contactDto);
+        if (check is false)
+        {
+            return BadRequest("Contact already exists");
+        }
+        var newContact = await _context.AddNewContact(contactDto);
 
-    //     return CreatedAtAction(nameof(Get), new { id = contact.Id }, contact.AsDto());
-    // }
+        return Ok(newContact);
+
+    }
 
     // [HttpPut("{id}")]
     // public ActionResult UpdateContact(int id, UpdateContactDto contactDto)
