@@ -2,6 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace ContactApp.Src.Contact.Model;
 
+using ContactApp.Src.Company.Model;
 public class Contact
 {
     [Key]
@@ -11,5 +12,6 @@ public class Contact
     public string Number { get; set; } = string.Empty;
     [Required]
     public string Provider { get; set; } =string.Empty;
+    public Company company = new Company();
 
 }

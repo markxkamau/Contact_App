@@ -10,5 +10,5 @@ public class Company
     [MaxLength(100)]
     [Required]
     public string Name { get; set; } = string.Empty;
-    public Contact contact {get; set;} = new Contact();
+    public List<Contact> contact {get; set;} = new List<Contact>();
 }
