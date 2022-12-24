@@ -47,39 +47,32 @@ public class ContactController : ControllerBase
 
     }
 
-    // [HttpPut("{id}")]
-    // public ActionResult UpdateContact(int id, UpdateContactDto contactDto)
-    // {
-    //     var existing = _context.Contact.AsNoTracking().SingleOrDefault(o => o.Id == id);
-    //     if (existing is null)
-    //     {
-    //         return NotFound();
-    //     }
-    //     var updated = new Contact
-    //     {
-    //         Id = id,
-    //         Number = contactDto.Number,
-    //         Provider = contactDto.Provider
-    //     };
+    [HttpPut("{id}")]
+    public async Task<ActionResult> UpdateContactAsync(int id, UpdateContactDto contactDto)
+    {
+        var existing = _context.checkContactExists(id);
 
-    //     _context.Contact.Update(updated);
-    //     _context.SaveChanges();
+        if (existing is false)
+        {
+            return NotFound();
+        }
 
-    //     return NoContent();
+        await _context.UpdateContact(id, contactDto);
 
-    // }
+        return NoContent();
 
-    // [HttpDelete("{id}")]
-    // public ActionResult DeleteContact(int id)
-    // {
-    //     var existing = _context.Contact.SingleOrDefault(ob => ob.Id == id);
-    //     if (existing is null)
-    //     {
-    //         return NotFound();
-    //     }
-    //     _context.Contact.Remove(existing);
-    //     _context.SaveChanges();
-    //     return NoContent();
-    // }
+    }
+
+    [HttpDelete("{id}")]
+    public ActionResult DeleteContact(int id)
+    {
+        var existing = _context.checkContactExists(id);
+        if (existing is false)
+        {
+            return NotFound();
+        }
+        _context.DeleteContact(id);
+        return NoContent();
+    }
 
 }

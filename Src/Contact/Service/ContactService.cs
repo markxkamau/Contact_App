@@ -27,7 +27,7 @@ public class ContactService
     {
         var contact = new Contact
         {
-            Id =  (int)new Random().NextInt64(),
+            Id = (int)new Random().NextInt64(),
             Number = contactDto.Number,
             Provider = contactDto.Provider
         };
@@ -37,7 +37,8 @@ public class ContactService
         return contact.AsDto();
     }
 
-    public bool checkContact(CreateContactDto contact){
+    public bool checkContact(CreateContactDto contact)
+    {
         var check = _context.Contact.Any(c => c.Number == contact.Number);
         if (check is false)
         {
@@ -46,8 +47,20 @@ public class ContactService
         return false;
 
     }
+    public bool checkContactExists(int id)
+    {
+        var existing = _context.Contact.AsNoTracking().SingleOrDefault(o => o.Id == id);
+        if (existing is null)
+        {
+            return false;
+        }
+        return true;
 
-    public async Task UpdateContact(int id, UpdateContactDto contactDto){
+    }
+
+
+    public async Task UpdateContact(int id, UpdateContactDto contactDto)
+    {
         var contact = new Contact
         {
             Id = id,
@@ -57,6 +70,13 @@ public class ContactService
 
         _context.Contact.Update(contact);
         await _context.SaveChangesAsync();
+    }
+
+    public void DeleteContact(int id)
+    {
+        var contact = _context.Contact.Find(id);
+         _context.Contact.Remove(contact);
+        _context.SaveChanges();
     }
 
 
