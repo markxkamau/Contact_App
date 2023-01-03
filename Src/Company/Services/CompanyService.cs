@@ -78,11 +78,70 @@ public class CompanyService
 
     public bool CheckContact(string number)
     {
-        var check = _context.Contact.Where(s => s.Number == number);
+        var check = _context.Contact.SingleOrDefault(s => s.Number == number);
         if (check is null)
         {
             return false;
         }
         return true;
     }
+
+    public int FindId(string name)
+    {
+        var companyName = _context.Company.SingleOrDefault(c => c.Name == name);
+        if (companyName is null)
+        {
+            return 0;
+        }
+        return companyName.Id;
+    }
+
+    public CompanyDto GetCompanyById(int id)
+    {
+        return _context.Company.Find(id).AsDtos();
+    }
+
+    public CompanyDto AddCompanyContact(int companyId, CreateCompanyDto companyDto)
+    {
+        // Check if the company exists 
+        var existing = _context.Company.Find(companyId);
+        if (existing is null)
+        {
+            return new CompanyDto();
+        }
+
+        // Declare new Contact list instantiated with existing DB data
+        List<Contact> contacts = existing.Contacts;
+
+        // Instantiate new contact to be added to the list from user input
+        var contact = new Contact
+        {
+            Id = new int(),
+            Number = companyDto.Number,
+            Provider = companyDto.Provider
+        };
+
+        // Update contact DB table
+        _context.Contact.Add(contact);
+        _context.SaveChanges();
+
+        // Add contact declared to the list
+        contacts.Add(contact);
+        
+        // Instantiate Company table with latest contact list adding new contacts
+        var company = new Company{
+            Id = companyId,
+            // Name = companyDto.Name,
+            // Category = companyDto.Category,
+            Contacts = contacts
+        };
+
+        // Update company DB table
+        _context.Company.Update(company);
+        _context.SaveChanges();
+
+
+        return company.AsDtos();
+    }
+
 }

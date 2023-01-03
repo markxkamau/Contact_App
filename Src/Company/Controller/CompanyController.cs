@@ -24,13 +24,18 @@ public class CompanyController : ControllerBase
             return NoContent();
         }
 
+        var contactCheck = _service.CheckContact(companyDto.Number);
+        if (contactCheck is true)
+        {
+            return BadRequest("Contact Already Exists");
+        }
+
         //Check the data passed against the Db to avoid repetition
         var companyCheck = _service.CheckCompany(companyDto.Name);//returns true when repetition is found
-        if (companyCheck is true) return BadRequest("Company Already Exists");
-
-        var contactCheck = _service.CheckContact(companyDto.Number);
-        if (contactCheck is true) return BadRequest("Contact Already Exists");
-
+        if (companyCheck is true)
+        {
+            return BadRequest("Company Already Exists");
+        }
         var company = _service.CreateNewCompany(companyDto);
         return Ok(company);
     }
@@ -42,4 +47,42 @@ public class CompanyController : ControllerBase
         return Ok(company);
     }
 
+    [HttpGet("{id}")]
+    public ActionResult<CompanyDto> GetCompanyById(int id)
+    {
+        var company = _service.GetCompanyById(id);
+        if (company is null)
+        {
+            return NotFound();
+        }
+        return Ok(company);
+    }
+
+    [HttpPut("{id}")]
+    public ActionResult UpdateCompany(int id, CreateCompanyDto companyDto)
+    {
+        // Check if company with id exists
+        var company = _service.GetCompanyById(id);
+        if (company is null)
+        {
+            return NotFound();
+        }
+        var newCompany = _service.AddCompanyContact(id, companyDto);
+        return Ok(newCompany);
+
+    }
+
 }
+//  if (companyCheck is true)
+//         {
+//             // Find the company's id
+//             var companyId = _service.FindId(companyDto.Name);
+//             if (companyId == 0)
+//             {
+//                 return BadRequest("Company Not Found");
+//             }
+//             // Add the new contact to the existing company id
+//             var contact = _service.AddCompanyContact(companyId, companyDto);
+//             return Ok(contact);
+
+//         }
