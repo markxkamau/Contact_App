@@ -8,6 +8,7 @@ using ContactApp.Src.Company.Dto;
 using ContactApp.Src.Company.Model;
 using ContactApp.Src.Contact.Model;
 using ContactApp.Src.Contact.Service;
+using Microsoft.EntityFrameworkCore;
 
 public class CompanyService
 {
@@ -98,7 +99,7 @@ public class CompanyService
 
     public CompanyDto GetCompanyById(int id)
     {
-        return _context.Company.Find(id).AsDtos();
+        return _context.Company.Include(s => s.Contacts).SingleOrDefault(s => s.Id == id).AsDtos();
     }
 
     public CompanyDto AddCompanyContact(int companyId, CreateCompanyDto companyDto)
@@ -127,17 +128,18 @@ public class CompanyService
 
         // Add contact declared to the list
         contacts.Add(contact);
-        
+
         // Instantiate Company table with latest contact list adding new contacts
-        var company = new Company{
+        var company = new Company
+        {
             Id = companyId,
-            // Name = companyDto.Name,
-            // Category = companyDto.Category,
+            Name = companyDto.Name,
+            Category = companyDto.Category,
             Contacts = contacts
         };
 
         // Update company DB table
-        _context.Company.Update(company);
+        existing = company;
         _context.SaveChanges();
 
 
