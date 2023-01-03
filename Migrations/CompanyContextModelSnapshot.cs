@@ -30,10 +30,12 @@ namespace ContactApp.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("Category")
+                        .HasColumnType("integer");
+
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
@@ -53,8 +55,7 @@ namespace ContactApp.Migrations
 
                     b.Property<string>("Number")
                         .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("character varying(20)");
+                        .HasColumnType("text");
 
                     b.Property<string>("Provider")
                         .IsRequired()
@@ -70,13 +71,13 @@ namespace ContactApp.Migrations
             modelBuilder.Entity("ContactApp.Src.Contact.Model.Contact", b =>
                 {
                     b.HasOne("ContactApp.Src.Company.Model.Company", null)
-                        .WithMany("contact")
+                        .WithMany("Contacts")
                         .HasForeignKey("CompanyId");
                 });
 
             modelBuilder.Entity("ContactApp.Src.Company.Model.Company", b =>
                 {
-                    b.Navigation("contact");
+                    b.Navigation("Contacts");
                 });
 #pragma warning restore 612, 618
         }

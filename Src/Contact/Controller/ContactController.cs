@@ -1,10 +1,8 @@
-using ContactApp;
-using ContactApp.Data;
-using ContactApp.Dtos;
-using ContactApp.Src.Contact.Model;
 using ContactApp.Src.Contact.Service;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+using ContactApp.Src.Contact.Dtos;
+
+namespace ContactApp.Src.Contact.Controller;
 
 [ApiController]
 [Route("[controller]")]
