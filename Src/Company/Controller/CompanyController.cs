@@ -18,8 +18,20 @@ public class CompanyController : ControllerBase
     [HttpPost]
     public ActionResult CreateCompany(CreateCompanyDto companyDto)
     {
+        //Check if input is null/not yet filled ensuring all required fields filled
+        if (companyDto is null)
+        {
+            return NoContent();
+        }
+
+        //Check the data passed against the Db to avoid repetition
+        var companyCheck = _service.CheckCompany(companyDto.Name);//returns true when repetition is found
+        if (companyCheck is true) return BadRequest("Company Already Exists");
+
+        var contactCheck = _service.CheckContact(companyDto.Number);
+        if (contactCheck is true) return BadRequest("Contact Already Exists");
+
         var company = _service.CreateNewCompany(companyDto);
-        // var companies = _service.GetCompany();
         return Ok(company);
     }
 

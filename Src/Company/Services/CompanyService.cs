@@ -2,6 +2,7 @@ using ContactApp.Data;
 
 namespace ContactApp.Src.Company.Services;
 
+using System;
 using System.Threading.Tasks;
 using ContactApp.Src.Company.Dto;
 using ContactApp.Src.Company.Model;
@@ -65,4 +66,23 @@ public class CompanyService
 
     }
 
+    public bool CheckCompany(string name)
+    {
+        var check = _context.Company.SingleOrDefault(s => s.Name == name);
+        if (check is null)
+        {
+            return false;
+        }
+        return true;
+    }
+
+    public bool CheckContact(string number)
+    {
+        var check = _context.Contact.Where(s => s.Number == number);
+        if (check is null)
+        {
+            return false;
+        }
+        return true;
+    }
 }
