@@ -124,7 +124,7 @@ public class CompanyService
 
         // Update contact DB table
         _context.Contact.Add(contact);
-        _context.SaveChanges();
+        // _context.SaveChanges();
 
         // Add contact declared to the list
         contacts.Add(contact);
@@ -146,4 +146,31 @@ public class CompanyService
         return company.AsDtos();
     }
 
+    public bool DeleteCompanyById(int id)
+    {
+        var company = _context.Company.Find(id);
+        if (company is null)
+        {
+            return false;
+        }
+        // if (company.Contacts is not null)
+        // {
+        //     List<Contact> contacts = company.Contacts;
+        //     foreach (var a in contacts)
+        //     {
+        //         var contact = _context.Contact.Find(a.Id);
+        //         if(contact is null){
+        //            break;
+        //         }
+        //         _context.Contact.Remove(contact);
+        //         _context.SaveChanges();
+        //     }
+            
+
+        // }
+        _context.Company.Remove(company);
+        _context.SaveChanges();
+        return true;
+
+    }
 }

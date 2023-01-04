@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace ContactApp.Src.Company.Controller;
 
 [ApiController]
-[Route("company/[controller]")]
+[Route("[controller]")]
 public class CompanyController : ControllerBase
 {
     private readonly CompanyService _service;
@@ -72,17 +72,16 @@ public class CompanyController : ControllerBase
 
     }
 
-}
-//  if (companyCheck is true)
-//         {
-//             // Find the company's id
-//             var companyId = _service.FindId(companyDto.Name);
-//             if (companyId == 0)
-//             {
-//                 return BadRequest("Company Not Found");
-//             }
-//             // Add the new contact to the existing company id
-//             var contact = _service.AddCompanyContact(companyId, companyDto);
-//             return Ok(contact);
+    [HttpDelete("{id}")]
+    public ActionResult DeleteCompany(int id)
+    {
+        var check = _service.DeleteCompanyById(id);
+        if (check is false)
+        {
+            return BadRequest("Company Id doesn't exist");
+        }
 
-//         }
+        return NoContent();
+    }
+
+}
