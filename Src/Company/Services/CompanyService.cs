@@ -113,7 +113,7 @@ public class CompanyService
         return _context.Company.Include(s => s.Contacts).SingleOrDefault(s => s.Id == id).AsDtos();
     }
 
-    public CompanyDto AddCompanyContact(int companyId, CreateCompanyDto companyDto)
+    public CompanyDto AddCompanyContact(int companyId, UpdateCompanyDto companyDto)
     {
         // Check if the company exists 
         var existing = _context.Company.Find(companyId);

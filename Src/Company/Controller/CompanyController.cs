@@ -59,7 +59,7 @@ public class CompanyController : ControllerBase
     }
 
     [HttpPut("{id}")]
-    public ActionResult<CompanyDto> UpdateCompany(int id, CreateCompanyDto companyDto)
+    public ActionResult<CompanyDto> UpdateCompany(int id, UpdateCompanyDto companyDto)
     {
         // Check if company with id exists
         var company = _service.GetCompanyById(id);
