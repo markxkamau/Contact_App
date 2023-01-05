@@ -18,11 +18,22 @@ public static class Extensions
     }
     public static CompanyDto AsDtos(this Company? company)
     {
+        List<ContactDto> contacts = new List<ContactDto>();
+        foreach (var item in company.Contacts)
+        {
+            var contactDto = new ContactDto()
+            {
+                Id = item.Id,
+                Number = item.Number,
+                Provider = item.Provider
+            };
+            contacts.Add(contactDto);
+        }
         return new CompanyDto
         {
             Id = company.Id,
             Name = company.Name,
-            Contacts = company.Contacts,
+            Contacts = contacts,
             Category = company.Category
         };
     }

@@ -28,11 +28,22 @@ public class CompanyService
 
     public async Task<CompanyDto> CreateCompany(CompanyDto companyDto)
     {
+        List<Contact> contacts = new List<Contact>();
+        foreach (var item in companyDto.Contacts)
+        {
+            var newContact = new Contact{
+                Id = item.Id,
+                Number = item.Number,
+                Provider = item.Provider
+            };
+            contacts.Add(newContact);
+        }
+        
         var company = new Company
         {
             Id = new int(),
             Name = companyDto.Name,
-            Contacts = companyDto.Contacts
+            Contacts = contacts
         };
 
         await _context.Company.AddAsync(company);
